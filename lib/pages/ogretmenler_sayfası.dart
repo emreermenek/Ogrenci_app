@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ogrenci_app/repository/ogretmenler_repository.dart';
 
 class OgretmenlerSayfasi extends StatefulWidget {
-  const OgretmenlerSayfasi({Key? key}) : super(key: key);
+  final OgretmenlerRepository ogretmenlerRepository;
+  const OgretmenlerSayfasi(this.ogretmenlerRepository, {Key? key}) : super(key: key);
 
   @override
   State<OgretmenlerSayfasi> createState() => _OgretmenlerSayfasiState();
