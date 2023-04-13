@@ -18,32 +18,52 @@ class _OgretmenlerSayfasiState extends State<OgretmenlerSayfasi> {
       ),
       body: Column(
         children: [
-          const PhysicalModel(
+           PhysicalModel(
             color: Colors.white,
             elevation: 10,
             child: Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 32,horizontal: 32),
                 child: Text(
-                    '10 öğretmen'
+                    '${widget.ogretmenlerRepository.ogretmenler.length} öğretmen'
                 ),
               ),
             ),
           ),
           Expanded(
             child: ListView.separated(
-              itemBuilder: (context, index) => ListTile(
-                title: const Text('Ayşe'),
-                leading: const Text('👩‍💼'), //🧑‍💼
+              itemBuilder: (context, index) => OgretmenSatiri(
+                widget.ogretmenlerRepository.ogretmenler[index],
+                widget.ogretmenlerRepository,
               ),
               separatorBuilder: (context, index) => const Divider(
 
               ),
-              itemCount: 25,
+              itemCount: widget.ogretmenlerRepository.ogretmenler.length,
             ),
           ),
         ],
       ),
+    );
+  }
+}
+class OgretmenSatiri extends StatefulWidget {
+  final Ogretmen ogretmen;
+  final OgretmenlerRepository ogretmenlerRepository;
+  const OgretmenSatiri(this.ogretmen, this.ogretmenlerRepository, {
+    super.key,
+  });
+
+  @override
+  State<OgretmenSatiri> createState() => _OgretmenSatiriState();
+}
+
+class _OgretmenSatiriState extends State<OgretmenSatiri> {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(widget.ogretmen.ad + ' ' + widget.ogretmen.soyad),
+      leading: IntrinsicWidth(child: Center(child: Text(widget.ogretmen.cinsiyet=='Kadın' ? '👩‍💼' : '🧑‍💼'))),
     );
   }
 }

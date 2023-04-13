@@ -8,6 +8,7 @@ class MesajlarRepository{
 
   ];
 
+  int yeniMesajSayisi = 4;
 
 }
 
