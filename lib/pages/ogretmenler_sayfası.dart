@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ogrenci_app/repository/ogretmenler_repository.dart';
 
-class OgretmenlerSayfasi extends StatefulWidget {
-  final OgretmenlerRepository ogretmenlerRepository;
-  const OgretmenlerSayfasi(this.ogretmenlerRepository, {Key? key}) : super(key: key);
+class OgretmenlerSayfasi extends ConsumerWidget {
+  const OgretmenlerSayfasi({Key? key}) : super(key: key);
 
   @override
-  State<OgretmenlerSayfasi> createState() => _OgretmenlerSayfasiState();
-}
-
-class _OgretmenlerSayfasiState extends State<OgretmenlerSayfasi> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final ogretmenlerRepository = ref.watch(ogretmenlerProvider);
     return Scaffold(
       appBar: AppBar(
           title: Text('Öğretmenler')
@@ -25,7 +21,7 @@ class _OgretmenlerSayfasiState extends State<OgretmenlerSayfasi> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 32,horizontal: 32),
                 child: Text(
-                    '${widget.ogretmenlerRepository.ogretmenler.length} öğretmen'
+                    '${ogretmenlerRepository.ogretmenler.length} öğretmen'
                 ),
               ),
             ),
@@ -33,13 +29,12 @@ class _OgretmenlerSayfasiState extends State<OgretmenlerSayfasi> {
           Expanded(
             child: ListView.separated(
               itemBuilder: (context, index) => OgretmenSatiri(
-                widget.ogretmenlerRepository.ogretmenler[index],
-                widget.ogretmenlerRepository,
+                ogretmenlerRepository.ogretmenler[index],
               ),
               separatorBuilder: (context, index) => const Divider(
 
               ),
-              itemCount: widget.ogretmenlerRepository.ogretmenler.length,
+              itemCount: ogretmenlerRepository.ogretmenler.length,
             ),
           ),
         ],
@@ -47,23 +42,17 @@ class _OgretmenlerSayfasiState extends State<OgretmenlerSayfasi> {
     );
   }
 }
-class OgretmenSatiri extends StatefulWidget {
+class OgretmenSatiri extends StatelessWidget {
   final Ogretmen ogretmen;
-  final OgretmenlerRepository ogretmenlerRepository;
-  const OgretmenSatiri(this.ogretmen, this.ogretmenlerRepository, {
+  const OgretmenSatiri(this.ogretmen, {
     super.key,
   });
 
   @override
-  State<OgretmenSatiri> createState() => _OgretmenSatiriState();
-}
-
-class _OgretmenSatiriState extends State<OgretmenSatiri> {
-  @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(widget.ogretmen.ad + ' ' + widget.ogretmen.soyad),
-      leading: IntrinsicWidth(child: Center(child: Text(widget.ogretmen.cinsiyet=='Kadın' ? '👩‍💼' : '🧑‍💼'))),
+      title: Text(ogretmen.ad + ' ' + ogretmen.soyad),
+      leading: IntrinsicWidth(child: Center(child: Text(ogretmen.cinsiyet=='Kadın' ? '👩‍💼' : '🧑‍💼'))),
     );
   }
 }
