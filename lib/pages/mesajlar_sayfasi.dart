@@ -1,8 +1,9 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ogrenci_app/repository/mesajlar_repository.dart';
+
+import '../models/mesaj.dart';
 
 class MesajlarSayfasi extends ConsumerStatefulWidget {
 
@@ -25,7 +26,7 @@ class _MesajlarSayfasiState extends ConsumerState<MesajlarSayfasi> {
     final mesajlarRepository = ref.watch(mesajlarProvider);
     return Scaffold(
       appBar: AppBar(
-          title: Text('Mesajlar')
+          title: const Text('Mesajlar')
       ),
       body: Column(
         children: [
@@ -51,10 +52,10 @@ class _MesajlarSayfasiState extends ConsumerState<MesajlarSayfasi> {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(),
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -70,7 +71,7 @@ class _MesajlarSayfasiState extends ConsumerState<MesajlarSayfasi> {
                       onPressed: () {
                         print('Gönder');
                       },
-                      child: Text('Gönder')
+                      child: const Text('Gönder')
                   ),
                 ),
               ],
@@ -98,7 +99,7 @@ class MesajGorunumu extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey,width: 2),
             color: Colors.orange.shade100,
-            borderRadius: BorderRadius.all(Radius.circular(15))
+            borderRadius: const BorderRadius.all(Radius.circular(15))
           ),
           child: Padding(
             padding: const EdgeInsets.all(24.0),

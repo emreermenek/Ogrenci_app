@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ogrenci_app/pages/ogretmen/ogretmenler_formu.dart';
 import 'package:ogrenci_app/repository/ogretmenler_repository.dart';
+
+import '../models/ogretmen.dart';
 
 class OgretmenlerSayfasi extends ConsumerWidget {
   const OgretmenlerSayfasi({Key? key}) : super(key: key);
@@ -17,13 +20,22 @@ class OgretmenlerSayfasi extends ConsumerWidget {
            PhysicalModel(
             color: Colors.white,
             elevation: 10,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 32,horizontal: 32),
-                child: Text(
-                    '${ogretmenlerRepository.ogretmenler.length} öğretmen'
+            child: Stack(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32,horizontal: 32),
+                    child: Text(
+                        '${ogretmenlerRepository.ogretmenler.length} öğretmen'
+                    ),
+                  ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: OgretmenIndirmeButonu(),
+
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -39,6 +51,54 @@ class OgretmenlerSayfasi extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+        Navigator.of(context).push<bool>(MaterialPageRoute(builder: (context) => const OgretmenForm()));
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class OgretmenIndirmeButonu extends StatefulWidget {
+  const OgretmenIndirmeButonu({
+    super.key,
+  });
+
+  @override
+  State<OgretmenIndirmeButonu> createState() => _OgretmenIndirmeButonuState();
+}
+
+class _OgretmenIndirmeButonuState extends State<OgretmenIndirmeButonu> {
+  bool isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        return isLoading ? CircularProgressIndicator() : IconButton(
+          icon: const Icon(Icons.download),
+          onPressed: () async {
+
+            //TODO loading
+            //TODO error
+            try{
+              setState(() {
+                isLoading = true;
+              });
+              await ref.watch(ogretmenlerProvider).indir();
+            }catch(e){
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(e.toString()))
+              );
+            }finally{
+            setState(() {
+              isLoading = false;
+            });
+            }
+          },
+        );
+      }
     );
   }
 }
